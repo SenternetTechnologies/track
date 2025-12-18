@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senternet Technologies | Project Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg-dark: #050505;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Cinematic Intro Styles */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1.5s ease-out, visibility 1.5s;
+        }
+
+        .intro-content {
+            text-align: center;
+            perspective: 1000px;
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateZ(-500px);
+            filter: blur(10px);
+            animation: cinematicEntrance 3.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-top: 20px;
+            letter-spacing: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 2s 2s forwards;
+        }
+
+        .scanning-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            box-shadow: 0 0 15px var(--primary);
+            animation: scan 4s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes cinematicEntrance {
+            0% { opacity: 0; transform: translateZ(-500px); filter: blur(20px); }
+            50% { opacity: 1; filter: blur(0px); }
+            100% { opacity: 1; transform: translateZ(0px); letter-spacing: 0.8rem; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scan {
+            0% { top: -5%; }
+            100% { top: 105%; }
+        }
+
+        /* App Container */
+        #app-container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            background: #f8fafc;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: var(--primary);
+        }
+
+        .footer-banner {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            color: #94a3b8;
+            font-size: 0.75rem;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 50;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Loader inside app */
+        .loader-ring {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+        }
+        .loader-ring:after {
+            content: " ";
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 6px solid var(--primary);
+            border-color: var(--primary) transparent var(--primary) transparent;
+            animation: loader-ring 1.2s linear infinite;
+        }
+        @keyframes loader-ring {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cinematic Intro -->
+    <div id="intro-overlay">
+        <div class="scanning-line"></div>
+        <div class="intro-content">
+            <div class="logo-text">SENTERNET</div>
+            <div class="tagline">PROJECT TRACKING SYSTEM</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="app-container">
+        <nav class="navbar">
+            <div class="flex items-center gap-4">
+                <a href="https://rebrand.ly/senternet" target="_blank" class="font-bold tracking-widest text-cyan-400">SENTERNET TECHNOLOGIES</a>
+                <span class="text-gray-500">|</span>
+                <span class="text-gray-300 text-xs uppercase tracking-tighter">Client Portal v2.5</span>
+            </div>
+            <div class="hidden md:flex gap-6">
+                <span class="text-white text-xs">CONTACT: +91 81900 38085</span>
+            </div>
+        </nav>
+
+        <div id="iframe-wrapper" class="w-full h-full relative">
+            <!-- Fullscreen Iframe -->
+            <iframe 
+                id="main-frame"
+                src="https://script.google.com/macros/s/AKfycbziBOQyBwY0WMMVkhaDySViRb9V7d8-h1t2E_D-EAdp2_uxoXVQqxXHcVUFs1DI7nlO7Q/exec" 
+                allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb"
+                sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
+                loading="lazy"
+            ></iframe>
+        </div>
+
+        <footer class="footer-banner">
+            <div>&copy; 2025 SENTERNET TECHNOLOGIES - Aranthangi</div>
+            <div class="hidden sm:block">Email: senternettechnologies@gmail.com</div>
+        </footer>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const intro = document.getElementById('intro-overlay');
+            const app = document.getElementById('app-container');
+
+            // Hold intro for 4.5 seconds to complete animation
+            setTimeout(() => {
+                intro.style.opacity = '0';
+                setTimeout(() => {
+                    intro.style.visibility = 'hidden';
+                    app.style.display = 'block';
+                    // Trigger fade in
+                    setTimeout(() => {
+                        app.style.opacity = '1';
+                    }, 50);
+                }, 1500);
+            }, 4500);
+        };
+
+        // Error handling for iframe loading
+        const iframe = document.getElementById('main-frame');
+        iframe.onerror = function() {
+            console.error("Failed to load tracking data. Please check your internet connection.");
+        };
+    </script>
+</body>
+</html>
