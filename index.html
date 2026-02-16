@@ -1,63 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Registration Form</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senternet Technologies | Project Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-glow: #00ff88;
+            --secondary-glow: #ffffff;
+            --bg-dark: #000000;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Cinematic High-End Intro */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* Digital Matrix Grid Background */
+        .grid-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: gridMove 20s linear infinite;
+            top: -50%;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 2rem;
+            text-transform: uppercase;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            animation: logoArrival 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .logo-glitch-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            transform: translateX(-100%);
+            animation: lightSweep 2s 1.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--primary-glow);
+            margin-top: 10px;
+            letter-spacing: 0.8rem;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1.5s 2.5s forwards;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Central Glow Flare */
+        .flare {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--primary-glow);
+            filter: blur(100px);
+            border-radius: 50%;
+            opacity: 0;
+            animation: flarePulse 4s ease-in-out forwards;
+        }
+
+        @keyframes logoArrival {
+            0% { opacity: 0; transform: scale(1.5) translateY(50px); filter: blur(30px); letter-spacing: 4rem; }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); letter-spacing: 1.5rem; }
+        }
+
+        @keyframes lightSweep {
+            0% { transform: translateX(-150%) skewX(-25deg); }
+            100% { transform: translateX(150%) skewX(-25deg); }
+        }
+
+        @keyframes flarePulse {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Main App Container */
+        #app-container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            opacity: 0;
+            background: #ffffff;
+            transition: opacity 1s ease-in-out;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(100vh - 60px);
+            border: none;
+            margin-top: 60px;
+        }
+
+        .header {
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .status-badge {
+            background: #e6fffa;
+            color: #059669;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid #10b981;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .footer {
+            height: 30px;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-  <main class="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
-    <h1 class="text-2xl font-bold text-slate-800 mb-1">Create Account</h1>
-    <p class="text-sm text-slate-500 mb-6">Fill in the details below to register.</p>
+<body>
 
-    <form id="registration-form" class="space-y-4">
-      <div>
-        <label for="fullName" class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-        <input id="fullName" name="fullName" type="text" required class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="John Doe" />
-      </div>
+    <!-- Cinematic Intro -->
+    <div id="intro-overlay">
+        <div class="grid-bg"></div>
+        <div class="flare"></div>
+        <div class="intro-content">
+            <div class="logo-container">
+                <div class="logo-text">SENTERNET</div>
+                <div class="logo-glitch-layer"></div>
+            </div>
+            <div class="tagline">The Future of Tech</div>
+        </div>
+    </div>
 
-      <div>
-        <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-        <input id="email" name="email" type="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="john@example.com" />
-      </div>
+    <!-- Main Content -->
+    <div id="app-container">
+        <header class="header">
+            <div class="flex items-center gap-3">
+                <a href="https://rebrand.ly/senternet" target="_blank">
+                    <span class="font-black tracking-tighter text-xl text-gray-900">SENTERNET<span class="text-green-500">.</span></span>
+                </a>
+                <span class="h-4 w-[1px] bg-gray-300"></span>
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-widest">Project Portal</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="status-badge">
+                    <div class="pulse-dot"></div>
+                    LIVE SYSTEM
+                </div>
+                <div class="hidden md:block text-[10px] text-gray-400 font-mono">
+                    SECURED_CONNECTION_ESTABLISHED
+                </div>
+            </div>
+        </header>
 
-      <div>
-        <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Password</label>
-        <input id="password" name="password" type="password" minlength="6" required class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Minimum 6 characters" />
-      </div>
+        <div id="iframe-wrapper" class="w-full h-full">
+            <iframe 
+                id="main-frame"
+                src="https://script.google.com/macros/s/AKfycbziBOQyBwY0WMMVkhaDySViRb9V7d8-h1t2E_D-EAdp2_uxoXVQqxXHcVUFs1DI7nlO7Q/exec" 
+                allow="geolocation; microphone; camera"
+                sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
+            ></iframe>
+        </div>
 
-      <div>
-        <label for="confirmPassword" class="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" minlength="6" required class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Re-enter password" />
-      </div>
+        <footer class="footer">
+            &copy; 2025 SENTERNET TECHNOLOGIES | ARANTHANGI | +91 81900 38085
+        </footer>
+    </div>
 
-      <button type="submit" class="w-full rounded-lg bg-blue-600 text-white py-2.5 font-medium hover:bg-blue-700 transition-colors">Register</button>
-    </form>
+    <script>
+        window.onload = function() {
+            const intro = document.getElementById('intro-overlay');
+            const app = document.getElementById('app-container');
 
-    <p id="message" class="mt-4 text-sm"></p>
-  </main>
+            // Total intro duration ~5 seconds
+            setTimeout(() => {
+                // Flash white transition
+                intro.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                intro.style.background = '#ffffff';
+                intro.style.opacity = '0';
+                
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    app.style.display = 'block';
+                    setTimeout(() => {
+                        app.style.opacity = '1';
+                    }, 50);
+                }, 800);
+            }, 5000);
+        };
 
-  <script>
-    const form = document.getElementById('registration-form');
-    const message = document.getElementById('message');
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      if (password !== confirmPassword) {
-        message.textContent = 'Passwords do not match.';
-        message.className = 'mt-4 text-sm text-red-600';
-        return;
-      }
-
-      message.textContent = 'Registration successful!';
-      message.className = 'mt-4 text-sm text-green-600';
-      form.reset();
-    });
-  </script>
+        // Iframe monitoring
+        const iframe = document.getElementById('main-frame');
+        iframe.onload = function() {
+            console.log("Senternet Tracking System: Online");
+        };
+    </script>
 </body>
 </html>
+
